@@ -91,14 +91,10 @@ always @(posedge baud_16_clk or negedge sys_rst_l) begin
                     shift_reg[WORD_LEN-1:1]
                 };
 
-                if (bit_count == WORD_LEN-1) begin
-                    rec_dataH <= {
-                        uart_rec_sync2,
-                        shift_reg[WORD_LEN-1:1]
-                    };
-
-                    bit_count <= 0;
-                    state <= STOP;
+                if (bit_count == WORD_LEN-1) 
+                begin
+                  bit_count <= 0;
+                  state <= STOP;
                 end
                 else begin
                     bit_count <= bit_count + 1'b1;
@@ -110,21 +106,23 @@ always @(posedge baud_16_clk or negedge sys_rst_l) begin
         end
 
         STOP: begin
-            rec_busy <= 1'b1;
+    rec_busy <= 1'b1;
 
-            if (baud_count == 4'd15) begin
-                baud_count <= 0;
+    if (baud_count == 4'd15) begin
+        baud_count <= 0;
 
-                if (uart_rec_sync2)
-                    rec_readyH <= 1'b1;
-
-                rec_busy <= 1'b0;
-                state <= IDLE;
-            end
-            else begin
-                baud_count <= baud_count + 1'b1;
-            end
+        if (uart_rec_sync2) begin
+            rec_dataH <= shift_reg;
+            rec_readyH <= 1'b1;
         end
+
+        rec_busy <= 1'b0;
+        state <= IDLE;
+    end
+    else begin
+        baud_count <= baud_count + 1'b1;
+    end
+end
 
         default: begin
             state <= IDLE;

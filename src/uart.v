@@ -4,19 +4,19 @@
 module uart #(
     parameter WORD_LEN = 8,
     parameter XTAL_CLK = 50_000_000,
-    parameter BAUD_RATE = 2400
+    parameter BAUD_RATE = 115200
 )(
     input wire sys_clk,
     input wire sys_rst_l,
     input wire xmitH,
     input wire [WORD_LEN-1:0] xmit_data,
-    input wire uart_rx,
+    input wire uart_REC_dataH,
     output wire xmit_doneH,
     output wire xmit_active,
     output wire [WORD_LEN-1:0] rec_dataH,
     output wire rec_busy,
     output wire rec_readyH,
-    output wire uart_tx
+    output wire uart_XMIT_dataH
 );
 
 wire baud_16_clk;
@@ -37,7 +37,7 @@ u_xmit #(
     .xmitH(xmitH),
     .xmit_data(xmit_data),
     .baud_16_clk(baud_16_clk),
-    .uart_XMIT_dataH(uart_tx),
+    .uart_XMIT_dataH(uart_XMIT_dataH),
     .xmit_doneH(xmit_doneH),
     .xmit_active(xmit_active)
 );
@@ -47,7 +47,7 @@ u_rec #(
 ) receiver (
     .sys_rst_l(sys_rst_l),
     .baud_16_clk(baud_16_clk),
-    .uart_REC_dataH(uart_rx),
+    .uart_REC_dataH(uart_REC_dataH),
     .rec_dataH(rec_dataH),
     .rec_busy(rec_busy),
     .rec_readyH(rec_readyH)
