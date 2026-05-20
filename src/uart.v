@@ -9,7 +9,7 @@ module uart #(
     input wire sys_clk,
     input wire sys_rst_l,
     input wire xmitH,
-    input wire [WORD_LEN-1:0] xmit_data,
+    input wire [WORD_LEN-1:0] xmit_dataH,
     input wire uart_REC_dataH,
     output wire xmit_doneH,
     output wire xmit_active,
@@ -35,7 +35,7 @@ u_xmit #(
 ) transmitter (
     .sys_rst_l(sys_rst_l),
     .xmitH(xmitH),
-    .xmit_data(xmit_data),
+    .xmit_dataH(xmit_dataH),
     .baud_16_clk(baud_16_clk),
     .uart_XMIT_dataH(uart_XMIT_dataH),
     .xmit_doneH(xmit_doneH),

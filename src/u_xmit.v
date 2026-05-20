@@ -4,7 +4,7 @@ module u_xmit #(parameter WORD_LEN=8)
 ( 
 input wire sys_rst_l,
 input wire xmitH,
-input wire [WORD_LEN-1:0] xmit_data,
+input wire [WORD_LEN-1:0] xmit_dataH,
 input wire baud_16_clk,
 output reg uart_XMIT_dataH,
 output reg xmit_doneH,
@@ -47,7 +47,7 @@ begin
  xmit_active<=1'b0;
   if(xmitH)
    begin
-    shift_reg <= xmit_data;
+    shift_reg <= xmit_dataH;
     bit_count<=0;
     baud_count <= 0;
     xmit_active<=1'b1;
